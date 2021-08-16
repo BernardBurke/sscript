@@ -1,5 +1,18 @@
+if ! [  -x "$(wslpath -m . >> /dev/null)" ]; then
+        #echo "Running on WSL"
+        ONWSL=true
+else
+        ONWSL=false
+fi
+
 TMPFILE=$(mktemp)
 TMPDIR=$(mktemp -d)
+
+
+if [ $ONWSL ]; then
+	TMPWDIR=$(wslpath -w $TMPDIR)
+fi
+
 VOL=20
 l=0
 echo "Create 12 files edl files"
@@ -19,8 +32,17 @@ do
 
 	do
 		l=$((l + 1))
-		echo "mpv --volume=$VOL --screen=$j --fs-screen=$j --fullscreen $TMPDIR/$l.edl"\
+
+		if [ $ONWSL ]; then
+			filename="$TMPDIR/$l.edl"
+			filename="$(wslpath -m "$filename")"
+			echo "mpv --volume=$VOL --screen=$j --fs-screen=$j --fullscreen $filename"\
 			>> "$TMPDIR/$j.run"
+		else
+			echo "mpv --volume=$VOL --screen=$j --fs-screen=$j --fullscreen $TMPDIR/$l.edl"\
+			>> "$TMPDIR/$j.run"
+		fi
+	
 		#chmod +x "$TMPDIR/$j.run"
 		echo "write 4 edls to each runtime file $k"
 	done
@@ -28,16 +50,24 @@ do
 done
 
 echo " and execute each runtime file"
-
+# clean up the run files from BATCHSRC
+#rm -v $BATCHSRC/.cmd
 for ((m=0;m<=2;m++))
 do
+	if [ $ONWSL ]; then
+		target="$BATCHSRC/$m.cmd"
+		#echo "start $(wslpath -m $TMPDIR/$m.run)"
+		cat $TMPDIR/$m.run >> "$target"
+	else
 
-	echo "contents of $TMPDIR "
-	ls -al $TMPDIR
-	echo "execute $m "
-	echo "bash -$TMPDIR/$m.run"
-	bash -x "$TMPDIR/$m.run" &
-	cat "$TMPDIR/$m.run"
+		echo "contents of $TMPDIR "
+		ls -al $TMPDIR
+		echo "execute $m "
+		echo "bash -$TMPDIR/$m.run"
+		bash -x "$TMPDIR/$m.run" &
+		cat "$TMPDIR/$m.run"
+	fi
+	
 done
 
 
