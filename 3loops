@@ -1,8 +1,8 @@
-if ( command -v wslpath ); then
-        echo "Running on WSL"
+if ( command -v wslpath &> /dev/null ); then
+        #echo "Running on WSL"
         ONWSL=true
 else
-        echo "wsl not available"
+        #echo "wsl not available"
 	ONWSL=false
 fi
 

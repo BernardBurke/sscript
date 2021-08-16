@@ -1,4 +1,4 @@
-if  ( command -v wslpath ) ; then
+if  ( command -v wslpath &> /dev/null ) ; then
 	#echo "Running on WSL"
 	ONWSL=true
 else	
