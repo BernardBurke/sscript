@@ -1,0 +1,11 @@
+TMPFILE=$(mktemp)
+TMP2=$(mktemp -d )
+for ((i=1;i<=12;i++))
+do
+	cat $EDLSRC/*_sizes | shuf -n 12 > $TMPFILE
+	$EDLSRC/gimme_30 $TMPFILE 3 > $TMP2/$i.edl
+done
+
+$BATCHSRC/loop_through_fill_me $TMP2/*.edl > $TMP2/batch.tmp
+chmod +x $TMP2/batch.tmp
+$TMP2/batch.tmp

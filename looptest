@@ -1,0 +1,43 @@
+TMPFILE=$(mktemp)
+TMPDIR=$(mktemp -d)
+VOL=20
+l=0
+echo "Create 12 files edl files"
+for ((i=1;i<=12;i++))
+do
+	cat $EDLSRC/*_sizes | shuf -n 12 > $TMPFILE
+        $SRC/gimme_30 $TMPFILE 3 > $TMPDIR/$i.edl
+	echo "creating Gimme edls -- $i"
+done
+
+echo "Create 3 runtime files"
+for ((j=0;j<=2;j++))
+do
+	echo "Creating runtime files -- $j"
+
+	for ((k=1;k<=4;k++))
+
+	do
+		l=$((l + 1))
+		echo "mpv --volume=$VOL --screen=$j --fs-screen=$j --fullscreen $TMPDIR/$l.edl"\
+			>> "$TMPDIR/$j.run"
+		#chmod +x "$TMPDIR/$j.run"
+		echo "write 4 edls to each runtime file $k"
+	done
+
+done
+
+echo " and execute each runtime file"
+
+for ((m=0;m<=2;m++))
+do
+
+	echo "contents of $TMPDIR "
+	ls -al $TMPDIR
+	echo "execute $m "
+	echo "bash -$TMPDIR/$m.run"
+	bash -x "$TMPDIR/$m.run" &
+	cat "$TMPDIR/$m.run"
+done
+
+

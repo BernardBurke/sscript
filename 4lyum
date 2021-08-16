@@ -1,0 +1,67 @@
+if [ -z "$1" ]
+	then
+		SCREEN_WIDTH=1920
+	else
+		SCREEN_WIDTH=$1
+fi
+
+if [ -z "$2" ]
+	then
+		SCREEN_HEIGHT=1080
+	else
+		SCREEN_HEIGHT=$2
+fi
+
+if [ -z "$3" ]
+	then
+		SCREEN=0
+	else
+		SCREEN=$3
+fi
+
+if [ -z "$4" ]
+	then
+		echo "plese provide a quadrant "
+	else
+		QUADRANT=$4	
+fi
+
+if [ -z "$5" ]
+	then
+		echo "please provide a filename to play"
+		exit 1
+	else
+		FILENAME="$5"
+fi
+
+if [ -z "$6" ]
+	then
+		VOLUME=10
+	else
+		VOLUME=$6
+fi
+
+SCREEN_WIDTH=$(( SCREEN_WIDTH / 2))
+SCREEN_HEIGHT=$(( SCREEN_HEIGHT / 2))
+
+
+case "$4" in
+
+1) GEOSTRING="50%+0+0"
+	;;
+2) GEOSTRING="50%+$SCREEN_WIDTH+0"
+	;;
+3) GEOSTRING="50%+0+$SCREEN_HEIGHT"
+	;;
+4) GEOSTRING="50%+$SCREEN_WIDTH+$SCREEN_HEIGHT"
+	;;
+*) echo "invalid quadrant $4 "
+	exit 1
+	;;
+esac
+
+echo "geometry $GEOSTRING screen $SCREEN filename $FILENAME volume $VOLUME"
+
+#exit 1
+
+mpv --volume="$VOLUME" --geometry="$GEOSTRING" --no-border --shuffle --screen="$SCREEN"  "$FILENAME" 
