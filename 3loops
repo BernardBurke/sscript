@@ -47,6 +47,10 @@ do
 
 done
 
+echo "rem" > $BATCHSRC/0.cmd
+echo "rem" > $BATCHSRC/1.cmd
+echo "rem" > $BATCHSRC/2.cmd
+
 echo " and execute each runtime file"
 # clean up the run files from BATCHSRC
 #rm -v $BATCHSRC/.cmd
