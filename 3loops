@@ -1,17 +1,15 @@
-if ! [  -x "$(wslpath -m . >> /dev/null)" ]; then
-        #echo "Running on WSL"
+if ( command -v wslpath ); then
+        echo "Running on WSL"
         ONWSL=true
 else
-        ONWSL=false
+        echo "wsl not available"
+	ONWSL=false
 fi
 
 TMPFILE=$(mktemp)
 TMPDIR=$(mktemp -d)
 
 
-if [ $ONWSL ]; then
-	TMPWDIR=$(wslpath -w $TMPDIR)
-fi
 
 VOL=20
 l=0
@@ -33,7 +31,7 @@ do
 	do
 		l=$((l + 1))
 
-		if [ $ONWSL ]; then
+		if ( $ONWSL ); then
 			filename="$TMPDIR/$l.edl"
 			filename="$(wslpath -m "$filename")"
 			echo "mpv --volume=$VOL --screen=$j --fs-screen=$j --fullscreen $filename"\
@@ -54,7 +52,7 @@ echo " and execute each runtime file"
 #rm -v $BATCHSRC/.cmd
 for ((m=0;m<=2;m++))
 do
-	if [ $ONWSL ]; then
+	if ( $ONWSL ); then
 		target="$BATCHSRC/$m.cmd"
 		#echo "start $(wslpath -m $TMPDIR/$m.run)"
 		cat $TMPDIR/$m.run >> "$target"

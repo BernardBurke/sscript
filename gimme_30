@@ -1,7 +1,8 @@
-if ! [ -x "$(wslpath -m . >> /dev/null)" ]; then
+if  ( command -v wslpath ) ; then
 	#echo "Running on WSL"
 	ONWSL=true
 else	
+	#echo "wsl not available "
 	ONWSL=false
 fi
 echo "# mpv EDL v0"
@@ -11,7 +12,7 @@ for (( i=1 ; i<=$2 ; i++ )); do
 		if [[ -n "$length" ]] && [[ "$length" != "0" ]] && [[ ! "$length" == "N"* ]]; then 
 			period=$(shuf -i 25-40 -n 1 )
 			strt=$(rand -M $length -s $period )
-			if [ $ONWSL ]; then
+			if ( $ONWSL ); then
 				echo "$(wslpath -m "$name"),$strt,$period"
 			else
 				echo "$name,$strt,$period"
