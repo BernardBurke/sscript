@@ -1,3 +1,7 @@
+# loop through all the edls specified in $1
+# generate 3 randomised EDL sets in a tmp dir
+#
+# Todo - generate these output as playlists
 if ( command -v wslpath &> /dev/null ); then
         #echo "Running on WSL"
         ONWSL=true
@@ -9,6 +13,13 @@ fi
 TMPFILE=$(mktemp)
 TMPDIR=$(mktemp -d)
 
+if [[ ! -z "$1" ]]; then
+	CATPATH="$EDLSRC/$1_sizes"
+else
+	CATPATH="$EDLSRC/*_sizes"
+fi
+
+echo "Getting EDLs from $CATPATH"
 
 
 VOL=20
@@ -16,7 +27,8 @@ l=0
 echo "Create 12 files edl files"
 for ((i=1;i<=12;i++))
 do
-	cat $EDLSRC/*_sizes  | grep -v jpg | shuf -n 12 > $TMPFILE
+	# cat $EDLSRC/*_sizes  | grep -v jpg | shuf -n 12 > $TMPFILE
+	cat $CATPATH | grep -v jpg | shuf -n 12 > $TMPFILE
         $SRC/gimme_30 $TMPFILE 3 > $TMPDIR/$i.edl
 	echo "creating Gimme edls -- $i"
 done
