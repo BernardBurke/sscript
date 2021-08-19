@@ -56,9 +56,12 @@ do
 		#chmod +x "$TMPDIR/$j.run"
 		echo "write 4 edls to each runtime file $k"
 	done
+	echo "Runtime file $j looks like this"
+	cat $TMPDIR/$j.run
 
 done
-
+echo "edl contents look like this"
+more $TMPDIR/*.edl
 echo "rem" > $BATCHSRC/0.cmd
 echo "rem" > $BATCHSRC/1.cmd
 echo "rem" > $BATCHSRC/2.cmd
