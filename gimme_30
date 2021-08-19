@@ -1,3 +1,4 @@
+#!/bin/bash
 if  ( command -v wslpath &> /dev/null ) ; then
 	#echo "Running on WSL"
 	ONWSL=true
@@ -12,6 +13,16 @@ for (( i=1 ; i<=$2 ; i++ )); do
 		if [[ -n "$length" ]] && [[ "$length" != "0" ]] && [[ ! "$length" == "N"* ]]; then 
 			period=$(shuf -i 25-40 -n 1 )
 			strt=$(rand -M $length -s $period )
+			while true; do
+			#echo "Length $length Start $strt Period $period"
+				runtime=$(( $strt + $period ))
+				#echo "Runtime $runtime"
+				if [ "$length" -lt "$runtime" ]; then
+					period=$[ "$period" - "1" ]
+				else
+					break
+				fi
+			done
 			if ( $ONWSL ); then
 				echo "$(wslpath -m "$name"),$strt,$period"
 			else
