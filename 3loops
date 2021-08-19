@@ -28,8 +28,12 @@ echo "Create 12 files edl files"
 for ((i=1;i<=12;i++))
 do
 	# cat $EDLSRC/*_sizes  | grep -v jpg | shuf -n 12 > $TMPFILE
-	cat $CATPATH | grep -v jpg | shuf -n 12 > $TMPFILE
+	cat $CATPATH |  grep -v jpg | shuf -n 12 > $TMPFILE
+	echo "Current TMPFILE" 
+	cat $TMPFILE	
         $SRC/gimme_30 $TMPFILE 3 > $TMPDIR/$i.edl
+	echo "Current EDL"
+	cat $TMPDIR/$i.edl
 	echo "creating Gimme edls -- $i"
 done
 
@@ -62,6 +66,7 @@ do
 done
 echo "edl contents look like this"
 more $TMPDIR/*.edl
+cat $TMPDIR/*.edl | sort -R
 echo "rem" > $BATCHSRC/0.cmd
 echo "rem" > $BATCHSRC/1.cmd
 echo "rem" > $BATCHSRC/2.cmd

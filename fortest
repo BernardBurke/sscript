@@ -1,0 +1,17 @@
+#!/bin/bash
+total=$(find "$GRLSRC/$1" -type f -name '*.mp*' | wc -l)
+j=0
+tenpercent=$(( total / 10 ))
+echo "ten percent is $tenpercent "
+decile=10
+find "$GRLSRC/$1" -type f -name '*.mp*' -print0 | while IFS= read -r -d '' i; do
+   echo "$i"
+   ((j++))
+   if [[ "$j" -eq "$tenpercent" ]]; then
+	   j=0
+	   echo "$decile percent complete"
+	   decile=$(( "$decile" + "10" ))
+    fi
+
+done
+
