@@ -4,7 +4,7 @@ j=0
 tenpercent=$(( total / 10 ))
 echo "ten percent is $tenpercent "
 decile=10
-find "$GRLSRC/$1" -type f -name '*.mp*' -print0 | while IFS= read -r -d '' i; do
+find "$GRLSRC/$1" -type f -name '*.mp*' -o -name '*.avi' -print0 | while IFS= read -r -d '' i; do
    echo "$i"
    ((j++))
    if [[ "$j" -eq "$tenpercent" ]]; then

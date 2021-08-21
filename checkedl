@@ -1,0 +1,34 @@
+#!/bin/bash
+# checks a given edl contents and returns the contents with comment #### for files that don't exist
+# allows rewrite of the given edl with the missing files removed
+#TMPFILE=$(mktemp)
+if  ( command -v wslpath &> /dev/null ) ; then
+        #echo "Running on WSL"
+        ONWSL=true
+else
+        #echo "wsl not available "
+        ONWSL=false
+fi
+	while IFS=, read -r name strt period <&4; do
+
+                #echo "$name" "$length" "$period"
+
+		#read -p "Press return to continue "
+		#head -n 1 >/dev/null
+		#echo $name
+		if [[ -f "$name" ]]; then	
+			if ( $ONWSL ); then
+				echo "$(wslpath -m "$name"),$strt,$period"
+			else
+				echo "$name,$strt,$period"
+			fi
+		else
+			echo "######### $name,$strt,$peroid"
+		fi
+
+
+		#		
+		done 4< $1		
+#echo "These files will get measured"
+#cat $TMPFILE
+#./get_length_of_a_file_contents $TMPFILE

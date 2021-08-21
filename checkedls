@@ -1,0 +1,20 @@
+#!/bin/bash
+# checks a given edl contents and returns the contents with comment #### for files that don't exist
+# allows rewrite of the given edl with the missing files removed
+#TMPFILE=$(mktemp)
+if  ( command -v wslpath &> /dev/null ) ; then
+        #echo "Running on WSL"
+        ONWSL=true
+else
+        #echo "wsl not available "
+        ONWSL=false
+fi
+       while IFS= read -r  file <&3;  do
+		echo "<-------------------- $file--------------------------->"
+		$SRC/checkedl "$file"
+	#
+	read -p "Press return"
+	done 3< <(find /mnt/d/edl/handmade/unix -name '*.edl' )
+#echo "These files will get measured"
+#cat $TMPFILE
+#./get_length_of_a_file_contents $TMPFILE
