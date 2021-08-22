@@ -1,14 +1,19 @@
 #!/bin/bash
 # checks a given edl contents and returns the contents with comment #### for files that don't exist
 # allows rewrite of the given edl with the missing files removed
-#TMPFILE=$(mktemp)
+TMPFILE=$(mktemp)
 if  ( command -v wslpath &> /dev/null ) ; then
         #echo "Running on WSL"
         ONWSL=true
+	OUTFILE="$EDLWINSCRATCH/$2"
 else
         #echo "wsl not available "
         ONWSL=false
-fi
+	OUTFILE="$EDLUNISCRATCH/$2"
+
+fi	
+	echo "# mpv EDL v0" >> $OUTFILE
+
 	while IFS=, read -r name strt period <&4; do
 
                 #echo "$name" "$length" "$period"
@@ -18,17 +23,18 @@ fi
 		#echo $name
 		if [[ -f "$name" ]]; then	
 			if ( $ONWSL ); then
-				echo "$(wslpath -m "$name"),$strt,$period"
+				echo "$(wslpath -m "$name"),$strt,$period" >> "$OUTFILE"
 			else
-				echo "$name,$strt,$period"
+				echo "$name,$strt,$period" >> "$OUTFILE"
 			fi
 		else
-			echo "######### $name,$strt,$peroid"
+			echo "######### $name,$strt,$peroid" >> "$OUTFILE"
+			echo "$name" >> $TMPFILE
 		fi
 
 
 		#		
 		done 4< $1		
 #echo "These files will get measured"
-#cat $TMPFILE
+cat $TMPFILE | sort -Ru >> "$3"
 #./get_length_of_a_file_contents $TMPFILE

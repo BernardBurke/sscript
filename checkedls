@@ -1,7 +1,9 @@
 #!/bin/bash
 # checks a given edl contents and returns the contents with comment #### for files that don't exist
 # allows rewrite of the given edl with the missing files removed
-#TMPFILE=$(mktemp)
+TMPFILE=$(mktemp)
+# params
+# $1 outputdir - not used
 if  ( command -v wslpath &> /dev/null ) ; then
         #echo "Running on WSL"
         ONWSL=true
@@ -10,11 +12,13 @@ else
         ONWSL=false
 fi
        while IFS= read -r  file <&3;  do
-		echo "<-------------------- $file--------------------------->"
-		$SRC/checkedl "$file"
+		CALLPARAMS="$file "
+		CALLPARAMS="$CALLPARAMS"$( basename "$file" ) 
+		echo "<-------------------- $CALLPARAMS--------------------------->"
+		$SRC/checkedl "$file" "$( basename "$file" )" "$TMPFILE"
 	#
-	read -p "Press return"
+	if ("$PAUSE_EACH"); then read -p "Press return"; fi
 	done 3< <(find /mnt/d/edl/handmade/unix -name '*.edl' )
 #echo "These files will get measured"
-#cat $TMPFILE
+cat $TMPFILE | sort -Ru
 #./get_length_of_a_file_contents $TMPFILE
