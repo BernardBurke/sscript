@@ -27,7 +27,12 @@ echo "Getting EDLs from $CATPATH"
 
 read -p "Press return to continue: "
 
-VOL=20
+if ("$VOLUME"); then 
+	VOL=$VOLUME
+else
+	VOL=20
+fi
+
 l=0
 echo "Create 12 files edl files"
 for ((i=1;i<=12;i++))
