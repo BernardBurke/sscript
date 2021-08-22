@@ -1,0 +1,39 @@
+#!/bin/bash
+# checks a given _size file contents and to resolve any missing paths from map
+#
+# I think I'm gonna give up and on this and add support for a seperate _sizes dir 
+#
+# Had a better idea - implement EDLSIZEMIX. It's unix only file formats as all clients convert at runtime
+TMPFILE=$(mktemp)
+OUTFILE="$EDLSIZEMIX/checked/$2"
+
+
+		while IFS=, read -r name length <&4; do
+
+                #echo "$name" "$length" "$period"
+
+		#read -p "Press return to continue "
+		#head -n 1 >/dev/null
+		#echo $name
+		#
+		# try and replace any missing filenames using the fixup map
+		if [[ ! -f "$name" ]]; then name=$($SRC/remap "$name") ; fi
+
+		if [[ -f "$name" ]]; then	
+			if ( $ONWSL ); then
+				echo "$(wslpath -m "$name"),$length" >> "$OUTFILE"
+			else
+				echo "$name,$length" >> "$OUTFILE"
+			fi
+		else
+				
+			echo "######### $name,$length" >> "$OUTFILE"
+			echo "$name" >> $TMPFILE
+		fi
+
+
+		#		
+		done 4< $1		
+#echo "These files will get measured"
+cat $TMPFILE | sort -Ru >> "$3"
+#./get_length_of_a_file_contents $TMPFILE

@@ -1,16 +1,30 @@
 #!/bin/bash
 # inline fixup of missing media files after dedupe
-while IFS= read -r name  <&4; do
+# I'm hacking this to fix a _sizes file
+#while IFS= read -r name  <&4; do
+while IFS=, read -r name size  <&4; do
+if [[ ! -f "$name" ]]; then 
 
-echo "---->$name" 
-grep -A2 -B2 "$name" "$EDLSRC/dupes.txt"
+	echo "---->$name" 
+	echo "checking existing map"
+	grep  "$name" $EDLSRC/fixup.map
+	if [ $? != "1" ]; then
+		echo "Already in map"
+	else
 
-while [[ ! -f $newname ]];do
+		grep -A2 -B2 "$name" "$EDLSRC/dupes.txt"
 
-	read -p "New Path>" newname
-done
-#head -n 1 >/dev/null
-echo "$name,$newname" >> $EDLSRC/$$_map
-newname=""
-#
+		while [[ ! -f $newname ]];do
+
+			read -p "New Path>" newname
+		done
+		#head -n 1 >/dev/null
+		echo "$name,$newname" >> $EDLSRC/$$_map
+		newname=""
+		#
+	fi
+else
+	echo "++++++++++++++++++++++++++++ $name is ok"
+fi
+
 done 4< $1

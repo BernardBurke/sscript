@@ -7,7 +7,7 @@ if  ( command -v wslpath &> /dev/null ) ; then
         ONWSL=true
 	OUTFILE="$EDLWINSCRATCH/$2"
 else
-        #echo "wsl not available "
+        echo "wsl not available "
         ONWSL=false
 	OUTFILE="$EDLUNISCRATCH/$2"
 

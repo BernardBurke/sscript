@@ -1,0 +1,25 @@
+#!/bin/bash
+# checks a given edl contents and returns the contents with comment #### for files that don't exist
+# allows rewrite of the given edl with the missing files removed
+# This has been modified to use $EDLSIZEMIX, a place to keep mixtures of size records
+TMPFILE=$(mktemp)
+# params
+# $1 outputdir - not used
+if  ( command -v wslpath &> /dev/null ) ; then
+        #echo "Running on WSL"
+        ONWSL=true
+else
+        #echo "wsl not available "
+        ONWSL=false
+fi
+       while IFS= read -r  file <&3;  do
+		CALLPARAMS="$file "
+		CALLPARAMS="$CALLPARAMS"$( basename "$file" ) 
+		echo "<-------------------- $CALLPARAMS--------------------------->"
+		$SRC/checkedl "$file" "$( basename "$file" )" "$TMPFILE"
+	#
+	if ("$PAUSE_EACH"); then read -p "Press return"; fi
+	done 3< <(find $EDLSIZEMIX -name '*_sizes' )
+#echo "These files will get measured"
+cat $TMPFILE | sort -Ru
+#./get_length_of_a_file_contents $TMPFILE

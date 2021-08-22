@@ -19,8 +19,13 @@ else
 	CATPATH="$EDLSRC/*_sizes"
 fi
 
+if [[ ! -z "$2" ]]; then
+	CATPATH="$EDLSIZEMIX/$1_sizes"
+fi
+
 echo "Getting EDLs from $CATPATH"
 
+read -p "Press return to continue: "
 
 VOL=20
 l=0
