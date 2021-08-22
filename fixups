@@ -1,0 +1,16 @@
+#!/bin/bash
+# inline fixup of missing media files after dedupe
+while IFS= read -r name  <&4; do
+
+echo "---->$name" 
+grep -A2 -B2 "$name" "$EDLSRC/dupes.txt"
+
+while [[ ! -f $newname ]];do
+
+	read -p "New Path>" newname
+done
+#head -n 1 >/dev/null
+echo "$name,$newname" >> $EDLSRC/$$_map
+newname=""
+#
+done 4< $1

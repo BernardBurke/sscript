@@ -21,6 +21,10 @@ fi
 		#read -p "Press return to continue "
 		#head -n 1 >/dev/null
 		#echo $name
+		#
+		# try and replace any missing filenames using the fixup map
+		if [[ ! -f "$name" ]]; then name=$($SRC/remap "$name") ; fi
+
 		if [[ -f "$name" ]]; then	
 			if ( $ONWSL ); then
 				echo "$(wslpath -m "$name"),$strt,$period" >> "$OUTFILE"
@@ -28,6 +32,7 @@ fi
 				echo "$name,$strt,$period" >> "$OUTFILE"
 			fi
 		else
+				
 			echo "######### $name,$strt,$peroid" >> "$OUTFILE"
 			echo "$name" >> $TMPFILE
 		fi

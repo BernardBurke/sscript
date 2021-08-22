@@ -1,0 +1,9 @@
+#!/bin/bash
+# inline fixup of missing media files after dedupe
+while IFS=, read -r name newname <&6; do
+if [ "$name" == "$1" ]; then
+	echo "$newname"
+fi
+#echo "---->$name" 
+#
+done 6< $EDLSRC/fixup.map
