@@ -1,0 +1,8 @@
+echo "# mpv EDL v0"
+while IFS=, read -r name ; do
+        if [[ "$name" == "d"* ]] || [[ "$name" == "D"* ]]; then
+                 echo "$(wslpath -a "$name")"
+        else
+                echo "#"
+        fi
+done < "$1"
