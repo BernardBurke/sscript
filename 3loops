@@ -10,7 +10,7 @@ else
 	ONWSL=false
 fi
 
-ONWSL=false
+#ONWSL=false
 
 TMPFILE=$(mktemp)
 TMPDIR=$(mktemp -d)
