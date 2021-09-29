@@ -8,6 +8,7 @@
 # to stop duping results, the output files will be written in SCRATCHDIR
 #
 TMPFILE1=$(mktemp)
+TMPFILE2=$(mktemp)
 TMPGREP1=$(mktemp)
 
 if  ( command -v wslpath &> /dev/null ) ; then
@@ -29,8 +30,9 @@ USAGE_MSG="-d SEARCH_DIR -s SEARCH_TERMS -o OUTPUT_FILE -k SEARCH_KEYDIR -s SEAR
 INDEX_OUTPUT=0
 DEFAULT_OUTPUT_NAME="$(basename $0)_$INDEX_OUTPUT_$$.edl"
 SEARCH_PATH=""
+LOOP_COUNT=1
 
-while getopts "d:g:r:o:kshn:" opt; do
+while getopts "d:g:r:o:kshn:l:" opt; do
         case $opt in
                 g )     echo "Search terms $OPTARG"
                         SEARCH_TERMS="$OPTARG"
@@ -57,7 +59,12 @@ while getopts "d:g:r:o:kshn:" opt; do
                         ;;
                 h )     echo "will search $HANDDIR"
                             SEARCH_PATH="$SEARCH_PATH $HANDDIR/*.edl "
-
+                        ;;
+                l )     LOOP_COUNT=$OPTARG
+                        echo "$LOOP_COUNT loops will execute" 
+                        ;;
+                r )     RANDOM_COUNT=$OPTARG
+                        echo "shuffle will produce $RANDOM_COUNT records"
                         ;;
                 * )     echo "Param probs"
                         exit 1
@@ -78,7 +85,7 @@ cat $TMPGREP1
 
 grep  -h -f $TMPGREP1  -- $SEARCH_PATH > $TMPFILE1
 
-cat $TMPFILE1
+shuf -n $RANDOM_COUNT $TMPFILE1
 
 exit 0
 
