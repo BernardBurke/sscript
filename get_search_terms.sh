@@ -34,6 +34,8 @@ SEARCH_PATH=""
 LOOP_COUNT=1
 RANDOM_COUNT=20
 OUTPUT_DIR="$SCRATCHDIR"
+FILE_NAME=SearchTerms
+OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
 
 while getopts "d:g:r:o:kshn:l:" opt; do
         case $opt in
@@ -90,7 +92,7 @@ done
 echo "Search Path is $SEARCH_PATH "
 
 
-grep  -h -f $TMPGREP1  -- $SEARCH_PATH | sort -Ru > $TMPFILE1
+grep  -h -i -f $TMPGREP1  -- $SEARCH_PATH | sort -Ru > $TMPFILE1
 
 $SRC/two_commas.sh $TMPFILE1 > $TMPFILE3
 #cat $TMPFILE2
