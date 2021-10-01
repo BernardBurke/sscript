@@ -9,6 +9,7 @@
 #
 TMPFILE1=$(mktemp)
 TMPFILE2=$(mktemp)
+TMPFILE3=$(mktemp)
 TMPGREP1=$(mktemp)
 
 if  ( command -v wslpath &> /dev/null ) ; then
@@ -31,6 +32,8 @@ INDEX_OUTPUT=0
 DEFAULT_OUTPUT_NAME="$(basename $0)_$INDEX_OUTPUT_$$.edl"
 SEARCH_PATH=""
 LOOP_COUNT=1
+RANDOM_COUNT=20
+OUTPUT_DIR="$SCRATCHDIR"
 
 while getopts "d:g:r:o:kshn:l:" opt; do
         case $opt in
@@ -66,6 +69,11 @@ while getopts "d:g:r:o:kshn:l:" opt; do
                 r )     RANDOM_COUNT=$OPTARG
                         echo "shuffle will produce $RANDOM_COUNT records"
                         ;;
+                n )     FILE_NAME=$OPTARG
+                        echo "Writing to $FILE_NAME $LOOP_COUNT.edl in $OUTPUT_DIR"
+                        OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
+                        echo "Stub $OUTPUT_STUB"
+                        ;;
                 * )     echo "Param probs"
                         exit 1
         esac
@@ -81,20 +89,21 @@ done
 
 echo "Search Path is $SEARCH_PATH "
 
-cat $TMPGREP1
 
-grep  -h -f $TMPGREP1  -- $SEARCH_PATH > $TMPFILE1
+grep  -h -f $TMPGREP1  -- $SEARCH_PATH | sort -Ru > $TMPFILE1
 
-shuf -n $RANDOM_COUNT $TMPFILE1
+$SRC/two_commas.sh $TMPFILE1 > $TMPFILE3
+#cat $TMPFILE2
+
+#read -p "Press return"
+
+for ((j=1;j<=$LOOP_COUNT;j++))
+        do 
+                OUTPUT_FILE="$OUTPUT_STUB$j.edl"
+                echo "Writing $OUTPUT_FILE"
+                echo "# mpv EDL v0" > $OUTPUT_FILE
+                shuf  -n $RANDOM_COUNT $TMPFILE1 >> $OUTPUT_FILE
+done
 
 exit 0
 
-cp $KEYDIR/Love1.edl $SCRATCHDIR/Love1_$$.edl -v
-cp $KEYDIR/Love2.edl $SCRATCHDIR/Love2_$$.edl -v
-cp $KEYDIR/Love2.edl $SCRATCHDIR/Love3_$$.edl -v
-cp $KEYDIR/header $KEYDIR/Love1.edl
-cp $KEYDIR/header $KEYDIR/Love2.edl
-cp $KEYDIR/header $KEYDIR/Love3.edl
-cat $HANDDIR/*.edl $KEYDIR/*.edl  $KEYDIR/new/*.edl | sort -Ru | head -n 40 >> $KEYDIR/Love1.edl
-cat $HANDDIR/*.edl $KEYDIR/*.edl  $KEYDIR/new/*.edl | sort -Ru | head -n 40 >> $KEYDIR/Love2.edl
-cat $HANDDIR/*.edl $KEYDIR/*.edl  $KEYDIR/new/*.edl | sort -Ru | head -n 40 >> $KEYDIR/Love3.edl
