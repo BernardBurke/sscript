@@ -18,12 +18,14 @@ if  ( command -v wslpath &> /dev/null ) ; then
         KEYDIR="$KEYCUTWIN"
         SCRATCHDIR="$EDLWINSCRATCH"
 	    HANDDIR="$HANDWIN"
+            NEWDIR="$EDLWINSCRATCH/new"
 else
         echo "wsl not available "
         ONWSL=false
         KEYDIR="$KEYCUTUNI"
         SCRATCHDIR="$EDLUNISCRATCH"
 	    HANDDIR="$HANDUNI"
+            NEWDIR="$EDLUNISCRATCH/new"
 
 fi
 
@@ -37,7 +39,7 @@ OUTPUT_DIR="$SCRATCHDIR"
 FILE_NAME=SearchTerms
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
 
-while getopts "d:g:r:o:kshn:l:" opt; do
+while getopts "d:g:r:o:kshwn:l:" opt; do
         case $opt in
                 g )     echo "Search terms $OPTARG"
                         SEARCH_TERMS="$OPTARG"
@@ -75,6 +77,9 @@ while getopts "d:g:r:o:kshn:l:" opt; do
                         echo "Writing to $FILE_NAME $LOOP_COUNT.edl in $OUTPUT_DIR"
                         OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
                         echo "Stub $OUTPUT_STUB"
+                        ;;
+                w)      echo "****will search $NEWDIR ****** New Dir over-rides all other directories"
+                                SEARCH_PATH="$NEWDIR/*.edl"
                         ;;
                 * )     echo "Param probs"
                         exit 1
