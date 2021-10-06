@@ -107,6 +107,11 @@ $SRC/two_commas.sh $TMPFILE1 > $TMPFILE3
 for ((j=1;j<=$LOOP_COUNT;j++))
         do 
                 OUTPUT_FILE="$OUTPUT_STUB$j.edl"
+                if [ -f $OUTPUT_FILE ]; then
+                        echo "Preserving $OUTPUT_FILE "
+                        OUTPUT_PRES="$OUTPUT_STUB$j_$$.edl"
+                        cp -v "$OUTPUT_FILE" "$OUTPUT_PRES"
+                fi
                 echo "Writing $OUTPUT_FILE"
                 echo "# mpv EDL v0" > $OUTPUT_FILE
                 shuf  -n $RANDOM_COUNT $TMPFILE1 >> $OUTPUT_FILE
