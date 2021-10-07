@@ -31,9 +31,11 @@ USAGE_MSG="-d SEARCH_DIR -s SEARCH_TERMS -o OUTPUT_FILE -n NameMask -c SHUFFLE_N
 SEARCH_PATH="$GRLSRC"
 LOOP_COUNT=1
 RANDOM_COUNT=20
-OUTPUT_DIR="$BATCHSRC"
+OUTPUT_DIR="$NEWDIR"
 FILE_NAME=editbatch
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
+echo $OUTPUT_STUB
+
 MODIFY_TIME=-7 # default to a week
 
 while getopts "d:g:r:o:n:l:m:" opt; do
@@ -129,7 +131,7 @@ for ((j=1;j<=$LOOP_COUNT;j++))
                         cp -v "$OUTPUT_FILE" "$OUTPUT_PRES"
                 fi
                 echo "Writing $OUTPUT_FILE"
-                shuf  -n $RANDOM_COUNT $TMPFILE1 >> $OUTPUT_FILE
+                shuf  -n $RANDOM_COUNT $TMPFILE1 > $OUTPUT_FILE
 done
 
 exit 0

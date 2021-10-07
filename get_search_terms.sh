@@ -114,7 +114,7 @@ for ((j=1;j<=$LOOP_COUNT;j++))
                 fi
                 echo "Writing $OUTPUT_FILE"
                 echo "# mpv EDL v0" > $OUTPUT_FILE
-                shuf  -n $RANDOM_COUNT $TMPFILE1 >> $OUTPUT_FILE
+                shuf  -n $RANDOM_COUNT $TMPFILE1 > $OUTPUT_FILE
 done
 
 exit 0
