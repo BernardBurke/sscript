@@ -31,8 +31,8 @@ USAGE_MSG="-d SEARCH_DIR -s SEARCH_TERMS -o OUTPUT_FILE -n NameMask -c SHUFFLE_N
 SEARCH_PATH="$GRLSRC"
 LOOP_COUNT=1
 RANDOM_COUNT=20
-OUTPUT_DIR="$SCRATCHDIR"
-FILE_NAME=SearchTerms
+OUTPUT_DIR="$BATCHSRC"
+FILE_NAME=editbatch
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
 MODIFY_TIME=-7 # default to a week
 
@@ -54,8 +54,6 @@ while getopts "d:g:r:o:n:l:m:" opt; do
                                     echo "$OUTPUT_DIR does not exist"
                                     exit 1
                                 fi    
-                        else
-                            $OUTPUT_DIR=$NEWDIR
                         fi
                         echo "Output file  $OUTPUT_DIR"
                         ;;
@@ -98,37 +96,39 @@ if [[ $SEARCH_TERMS != "" ]]; then
     for k in $(<$TMPGREP1)
         do
             #echo "executine  find  $SEARCH_DIR -iname '*$k*' -mtime $MODIFY_TIME "
-            find  "$SEARCH_DIR" -iname "*$k*" -mtime $MODIFY_TIME 
-            #>> TMPGREP2
+            find  "$SEARCH_DIR" -iname "*$k*" -mtime $MODIFY_TIME  >> $TMPFILE2
             #cat $TMPGREP2
     done
 else
     echo "No search terms"
-    find $SEARCH_DIR   -mtime $MODIFY_TIME # >> TMPGREP2
+    find $SEARCH_DIR   -mtime $MODIFY_TIME  >> "$TMPFILE2"
 fi
   
-exit 0
+#cat $TMPGREP2
 
 
-cat  $TMPGREP2 | sort -Ru > $TMPFILE1
+echo "Sorting and making unique "
+cat  $TMPFILE2 | sort -Ru  > $TMPFILE3
 
-
-
-$SRC/two_commas.sh $TMPFILE1 > $TMPFILE3
-#cat $TMPFILE2
+if $ONWSL
+    then echo "Converting to WSL Windows paths"
+    OLDIFS=$IFS
+    while IFS=, read -r element ; do
+        wslpath -m "$element" >> $TMPFILE1
+    done < "$TMPFILE3"
+fi
 
 #read -p "Press return"
 
 for ((j=1;j<=$LOOP_COUNT;j++))
         do 
-                OUTPUT_FILE="$OUTPUT_STUB$j.edl"
+                OUTPUT_FILE="$OUTPUT_STUB$j.m3u"
                 if [ -f $OUTPUT_FILE ]; then
                         echo "Preserving $OUTPUT_FILE "
-                        OUTPUT_PRES="$OUTPUT_STUB$j_$$.edl"
+                        OUTPUT_PRES="$OUTPUT_STUB$j_$$.m3u"
                         cp -v "$OUTPUT_FILE" "$OUTPUT_PRES"
                 fi
                 echo "Writing $OUTPUT_FILE"
-                echo "# mpv EDL v0" > $OUTPUT_FILE
                 shuf  -n $RANDOM_COUNT $TMPFILE1 >> $OUTPUT_FILE
 done
 
