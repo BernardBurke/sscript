@@ -18,14 +18,14 @@ if  ( command -v wslpath &> /dev/null ) ; then
         KEYDIR="$KEYCUTWIN"
         SCRATCHDIR="$EDLWINSCRATCH"
 	    HANDDIR="$HANDWIN"
-            NEWDIR="$EDLWINSCRATCH/new"
+            NEWDIR="$KEYCUTWIN/new"
 else
         echo "wsl not available "
         ONWSL=false
         KEYDIR="$KEYCUTUNI"
         SCRATCHDIR="$EDLUNISCRATCH"
 	    HANDDIR="$HANDUNI"
-            NEWDIR="$EDLUNISCRATCH/new"
+            NEWDIR="$KEYCUTWIN/new"
 
 fi
 
