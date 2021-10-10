@@ -94,7 +94,9 @@ for i in ${SEARCH_TERMS//,/ }
     echo "$i" >> $TMPGREP1
 done
 
-echo "Search Path is $SEARCH_PATH "
+echo "Search Path is $SEARCH_PATH search terms are "
+cat $TMPGREP1
+
 
 
 grep  -h -i -f $TMPGREP1  -- $SEARCH_PATH | sort -Ru > $TMPFILE1
