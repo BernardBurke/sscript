@@ -103,7 +103,7 @@ if [[ $SEARCH_TERMS != "" ]]; then
     done
 else
     echo "No search terms"
-    find $SEARCH_DIR   -mtime $MODIFY_TIME  >> "$TMPFILE2"
+    find  $SEARCH_DIR  -type f  -mtime $MODIFY_TIME  >> "$TMPFILE2"
 fi
   
 #cat $TMPGREP2
