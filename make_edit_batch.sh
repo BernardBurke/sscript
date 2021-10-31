@@ -25,18 +25,21 @@ else
 
 fi
 
-USAGE_MSG="-d SEARCH_DIR -s SEARCH_TERMS -o OUTPUT_FILE -n NameMask -c SHUFFLE_N -l LOOP_COUNT"
+USAGE_MSG="-d SEARCH_DIR -g SEARCH_TERMS -d SEARCH_DIR -o OUTPUT_FILE -n FILE_NAME -m MODIFY_TIME -l LOOP_COUNT -r RANDCOM_COUNT"
 #INDEX_OUTPUT=0
 #DEFAULT_OUTPUT_NAME="$(basename $0)_$INDEX_OUTPUT_$$.edl"
 SEARCH_PATH="$GRLSRC"
+SEARCH_DIR="$SEARCH_PATH/pure" # a default
 LOOP_COUNT=1
 RANDOM_COUNT=20
 OUTPUT_DIR="$NEWDIR"
 FILE_NAME=editbatch
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
-echo $OUTPUT_STUB
+echo "Output Stub $OUTPUT_STUB"
 
 MODIFY_TIME=-7 # default to a week
+
+echo $USAGE_MSG
 
 while getopts "d:g:r:o:n:l:m:" opt; do
         case $opt in
@@ -74,6 +77,7 @@ while getopts "d:g:r:o:n:l:m:" opt; do
                         echo "Modify time is $MODIFY_TIME"
                         ;;
                 * )     echo "Param probs"
+			echo "$USAGE_MSG"
                         exit 1
         esac
 done
