@@ -23,8 +23,12 @@ fi
 
 if [[ "$1" = "" ]]; then
     INPUT_FILE=$HANDDIR/MASTER.m3u
+    OUTPUT_FILE=$HANDDIR/MASTER.edl
+    SAVE_SPEC=MASTER_$$.edl
 else
     INPUT_FILE=$HANDDIR/$1.m3u
+    OUTPUT_FILE=$HANDDIR/$1.edl
+    SAVE_SPEC=$1_$$.edl
 fi
 
 
@@ -61,10 +65,14 @@ while IFS=, read -r lion start length;
         fi
 done< $TMPFILE3
 
-echo "# mpv EDL v0" > $HANDDIR/MASTER.edl
+echo "Outputing to $OUTPUT_FILE"
+
+cp -v $OUTPUT_FILE "$SCRATCHDIR/$SAVE_SPEC"
+
+echo "# mpv EDL v0" > $OUTPUT_FILE
 
 
-shuf -n 200 $TMPFILE1 | grep -v '#' >> $HANDDIR/MASTER.edl
+shuf -n 200 $TMPFILE1 | grep -v '#' >> $OUTPUT_FILE
 
 #| grep -v "#" >> $HANDDIR/MASTER.edl
 
