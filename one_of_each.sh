@@ -26,15 +26,20 @@ if [[ "$1" = "" ]]; then
     OUTPUT_DIR=$SCRATCHDIR
 else
     INPUT_DIR=$1
+    OUTPUT_DIR=$SCRATCHDIR
     
 fi
 
 OUTPUT_FILE="$OUTPUT_DIR/one_of_each.edl"
 
+echo "Input $INPUT_DIR output $OUTPUT_FILE"
+
+
+
 if [[ "$2" = "" ]]; then
     GET_ME=1
 else
-    GET_ME=$1
+    GET_ME=$2
 fi
 
 
@@ -44,11 +49,13 @@ if [ ! -d "$INPUT_DIR" ]; then
     exit
 fi    
 
+cp -v $OUTPUT_FILE $OUTPUT_DIR/one_of_each_$$.edl
+
 echo "# mpv EDL v0" > $OUTPUT_FILE
 
 for file in $INPUT_DIR/*.edl; do
 
-    shuf -n $GET_ME  "$file" | grep -v "#" >> $OUTPUT_FILE
+    shuf -n $GET_ME  "$file" | grep -v "#"  >> $OUTPUT_FILE
 
 done
 
