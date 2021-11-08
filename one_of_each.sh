@@ -1,6 +1,6 @@
 #!/bin/bash
 TMPFILE1=$(mktemp)
-#TMPFILE2=$(mktemp)
+TMPFILE2=$(mktemp)
 #TMPFILE3=$(mktemp)
 #TMPGREP1=$(mktemp)
 
@@ -55,9 +55,11 @@ echo "# mpv EDL v0" > $OUTPUT_FILE
 
 for file in $INPUT_DIR/*.edl; do
 
-    shuf -n $GET_ME  "$file" | grep -v "#"  >> $OUTPUT_FILE
+    shuf -n $GET_ME  "$file" | grep -v "#"  >> $TMPFILE2
 
 done
+
+shuf $TMPFILE2 >> $OUTPUT_FILE
 
 cat $OUTPUT_FILE
 
