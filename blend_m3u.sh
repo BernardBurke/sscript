@@ -72,7 +72,7 @@ cp -v $OUTPUT_FILE "$SCRATCHDIR/$SAVE_SPEC"
 echo "# mpv EDL v0" > $OUTPUT_FILE
 
 
-shuf -n 200 $TMPFILE1 | grep -v '#' >> $OUTPUT_FILE
+shuf -n 800 $TMPFILE1 | grep -v '#' >> $OUTPUT_FILE
 
 #| grep -v "#" >> $HANDDIR/MASTER.edl
 
