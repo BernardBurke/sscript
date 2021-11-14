@@ -1,16 +1,18 @@
 #!/bin/bash
-TMPFILE1=$(mktemp)
-TMPFILE2=$(mktemp)
-TMPFILE3=$(mktemp)
-TMPGREP1=$(mktemp)
+#TMPFILE1=$(mktemp)
+#TMPFILE2=$(mktemp)
+#TMPFILE3=$(mktemp)
+#TMPGREP1=$(mktemp)
 
 if  ( command -v wslpath &> /dev/null ) ; then
         #echo "Running on WSL"
         ONWSL=true
         TAGDIR=$TAGWIN
+        HANDDIR=$HANDWIN
 else
         echo "wsl not available "
         ONWSL=false
+        HANDDIR=$HANDUNI
         TAGDIR=$TAGUNI
 
 fi
