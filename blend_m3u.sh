@@ -28,6 +28,7 @@ if [[ "$1" = "" ]]; then
 else
     INPUT_FILE=$HANDDIR/$1.m3u
     OUTPUT_FILE=$HANDDIR/$1.edl
+    LINUX_OUTPUT_FILE=$HANDUNI/$1.edl
     SAVE_SPEC=$1_$$.edl
 fi
 
@@ -71,8 +72,20 @@ cp -v $OUTPUT_FILE "$SCRATCHDIR/$SAVE_SPEC"
 
 echo "# mpv EDL v0" > $OUTPUT_FILE
 
+if $ONWSL
+    then
 
-shuf -n 800 $TMPFILE1 | grep -v '#' >> $OUTPUT_FILE
+        echo "Shuffling to $OUTPUT_FILE"
+
+        shuf -n 400 $TMPFILE1  | grep -v '#' | sort -Ru >> $OUTPUT_FILE
+
+        echo "Making linux version in  $LINUX_OUTPUT_FILE"
+
+        $SRC/cnvwinu "$OUTPUT_FILE" > "$LINUX_OUTPUT_FILE"
+fi
+
+
+#create the parallel Linux format files
 
 #| grep -v "#" >> $HANDDIR/MASTER.edl
 
