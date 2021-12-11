@@ -7,6 +7,24 @@ else
 	ONWSL=false
 fi
 
+if [[ "$3" = "" ]]; then
+	SLICE=30
+else
+	SLICE=$3
+fi
+
+#echo "Slice time is $SLICE"
+
+VARIANCE=5
+
+LOWER=$[SLICE - $VARIANCE]
+UPPER=$[SLICE + $VARIANCE]
+
+#echo $LOWER
+#echo $UPPER
+
+#exit
+
 #ONWSL=false
 
 echo "# mpv EDL v0"
@@ -14,7 +32,7 @@ for (( i=1 ; i<=$2 ; i++ )); do
 	while IFS=, read -r name length; do
 		#echo "$name" "$length" >> length_records.txt
 		if [[ -n "$length" ]] && [[ "$length" != "0" ]] && [[ ! "$length" == "N"* ]]; then 
-			period=$(shuf -i 25-40 -n 1 )
+			period=$(shuf -i $LOWER-$UPPER -n 1 )
 			strt=$(rand -M $length -s $period )
 			while true; do
 			#echo "Length $length Start $strt Period $period"
