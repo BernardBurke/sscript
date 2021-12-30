@@ -17,6 +17,7 @@ COUNT=1
 COUNT=20
 OUTPUT_DIR="$NEWDIR"
 FILE_NAME=CUTbatch
+SEARCH_TERM=""
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
 echo "Output Stub $OUTPUT_STUB"
 
@@ -26,7 +27,7 @@ COUNT=10
 
 echo $USAGE_MSG
 
-while getopts "d:c:m:" opt; do
+while getopts "d:c:m:s:" opt; do
         case $opt in
                 d )     echo "Search dir  $OPTARG"
                         SEARCH_DIR="$OPTARG"
@@ -43,6 +44,10 @@ while getopts "d:c:m:" opt; do
                 m )     MODIFY_TIME=$OPTARG
                         echo "Modify time is $MODIFY_TIME"
                         ;;
+                s )     SEARCH_TERM=$OPTARG
+                        echo "Search term is $SEARCH_TERM"
+                        ;;
+
                 * )     echo "Param probs"
 			echo "$USAGE_MSG"
                         exit 1
@@ -51,12 +56,24 @@ done
 
 # make the grep file if required.
 echo "Search Path is $SEARCH_PATH "
+echo "Search term is $SEARCH_TERM"
 echo "MODIFY_TIME is $MODIFY_TIME"
 
+if [[ "$SEARCH_TERM" == "" ]]; then
+    echo "No Search Term"
+    find $SEARCH_DIR -type f -mtime $MODIFY_TIME  -iname "*.m??" > $TMPFILE2
+else
+    echo "Search term is  $SEARCH_TERM---->"
+    find $SEARCH_DIR -type f -mtime $MODIFY_TIME -iname "*$SEARCH_TERM*" > $TMPFILE2
+fi
 
-for f in $SEARCH_DIR/*.m??; do
+cat $TMPFILE2
+
+
+
+while IFS= read -r fname; do
     echo $f 
-    this_file="$f"
+    this_file="$fname"
     this_file=$(basename -- "$this_file")
     this_file="${this_file%.*}"
     this_file="$this_file.edl"
@@ -64,11 +81,11 @@ for f in $SEARCH_DIR/*.m??; do
     status="$(find $KEYDIR -name "$this_file")"
     #echo "status $status"
     if [ -f "$status" ]; then
-        echo "$f is already CUT"
+        echo "$fname is already CUT"
     else
         if $ONWSL 
             then
-            wpath=$(wslpath -w "$f")
+            wpath=$(wslpath -w "$fname")
             #echo "mpv --volume=10 \"$wpath\"" 
             echo "mpv --volume=50 --fullscreen --fs-screen=0 \"$wpath\"" --screen=0 >> "$TMPFILE1"
 
@@ -84,10 +101,10 @@ for f in $SEARCH_DIR/*.m??; do
         fi
 
     fi 
-done
+done < $TMPFILE2
 
 echo "Found $COUNTER Cuttable files"
 
 cat $TMPFILE1 | sort -Ru > "$BATCHSRC/CUTTING.cmd"
 
-echo "pause" >> "$BATCHSRC/CUTTING.cmd"
+cat "$BATCHSRC/CUTTING.cmd"
