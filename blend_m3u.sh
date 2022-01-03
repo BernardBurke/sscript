@@ -77,7 +77,7 @@ if $ONWSL
 
         echo "Shuffling to $OUTPUT_FILE"
 
-        shuf -n 400 $TMPFILE1  | grep -v '#' | sort -Ru >> $OUTPUT_FILE
+        shuf -n 1000 $TMPFILE1  | grep -v '#' | sort -Ru >> $OUTPUT_FILE
 
         echo "Making linux version in  $LINUX_OUTPUT_FILE"
 
