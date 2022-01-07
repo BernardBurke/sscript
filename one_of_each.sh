@@ -72,7 +72,9 @@ NO_OF_RECORDS=$(cat $TMPFILE2 | wc -l )
 
 echo "There were $NO_OF_RECORDS in the $OUTPUT_FILE"
 
-THIRDS=$(( $NO_OF_RECORDS / 3 ))
+#THIRDS=$(( $NO_OF_RECORDS / 3 ))
+# the files are getting too big to play - I'm gonna divide by 20
+THIRDS=$(( $NO_OF_RECORDS / 20 ))
 
 echo "Split files are $THIRDS long"
 
