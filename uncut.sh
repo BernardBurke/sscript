@@ -19,6 +19,7 @@ OUTPUT_DIR="$NEWDIR"
 FILE_NAME=CUTbatch
 SEARCH_TERM=""
 OUTPUT_STUB="$OUTPUT_DIR/$FILE_NAME"
+DITCHED_FILE="$EDLSRC/ditched.txt"
 echo "Output Stub $OUTPUT_STUB"
 
 
@@ -73,38 +74,41 @@ cat $TMPFILE2
 
 while IFS= read -r fname; do
     echo $f 
+    
     this_file="$fname"
     this_file=$(basename -- "$this_file")
     this_file="${this_file%.*}"
-    this_file="$this_file.edl"
-    #echo "-------------> $this_file"
-    status="$(find $KEYDIR -name "$this_file")"
-    #echo "status $status"
-    if [ -f "$status" ]; then
-        echo "$fname is already CUT"
+    if grep "$this_file" $DITCHED_FILE; then
+        echo "Ditched----> $this_file"
     else
-        if $ONWSL 
-            then
-            wpath=$(wslpath -w "$fname")
-            #echo "mpv --volume=10 \"$wpath\"" 
-            echo "mpv --volume=50 --fullscreen --fs-screen=0 \"$wpath\"" --screen=0 >> "$TMPFILE1"
+        this_file="$this_file.edl"
+        #echo "-------------> $this_file"
+        status="$(find $KEYDIR -name "$this_file")"
+        #echo "status $status"
+        if [ -f "$status" ]; then
+            echo "$fname is already CUT"
+        else
+            if $ONWSL 
+                then
+                wpath=$(wslpath -w "$fname")
+                #echo "mpv --volume=10 \"$wpath\"" 
+                echo "$wpath" >> "$TMPFILE1"
 
-            echo "pause" >> "$TMPFILE1"
+            fi 
+        
+            ((COUNTER++))
 
+            if [ "$COUNTER" -gt "$COUNT" ]; then
+                break
+            fi
 
         fi 
+    fi
     
-        ((COUNTER++))
-
-        if [ "$COUNTER" -gt "$COUNT" ]; then
-            break
-        fi
-
-    fi 
 done < $TMPFILE2
 
 echo "Found $COUNTER Cuttable files"
 
-cat $TMPFILE1 | sort -Ru > "$BATCHSRC/CUTTING.cmd"
+cat $TMPFILE1 | sort -Ru > "$BATCHSRC/CUTTING.m3u"
 
-cat "$BATCHSRC/CUTTING.cmd"
+cat "$BATCHSRC/CUTTING.m3u"
