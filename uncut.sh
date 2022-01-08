@@ -65,7 +65,7 @@ if [[ "$SEARCH_TERM" == "" ]]; then
     find $SEARCH_DIR -type f -mtime $MODIFY_TIME  -iname "*.m??" > $TMPFILE2
 else
     echo "Search term is  $SEARCH_TERM---->"
-    find $SEARCH_DIR -type f -mtime $MODIFY_TIME -iname "*$SEARCH_TERM*" > $TMPFILE2
+    find $SEARCH_DIR -type f -mtime $MODIFY_TIME -iname "*$SEARCH_TERM*.m??" > $TMPFILE2
 fi
 
 cat $TMPFILE2
@@ -82,9 +82,9 @@ while IFS= read -r fname; do
         echo "Ditched----> $this_file"
     else
         this_file="$this_file.edl"
-        #echo "-------------> $this_file"
+        echo "-------------> $this_file"
         status="$(find $KEYDIR -name "$this_file")"
-        #echo "status $status"
+        echo "status $status"
         if [ -f "$status" ]; then
             echo "$fname is already CUT"
         else
