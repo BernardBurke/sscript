@@ -9,6 +9,7 @@ if  ( command -v wslpath &> /dev/null ) ; then
         ONWSL=true
         KEYDIR="$KEYCUTWIN"
         SCRATCHDIR="$EDLWINSCRATCH"
+	ALTSCRATCHDIR="$EDLUNISCRATCH"
 	    HANDDIR="$HANDWIN"
             NEWDIR="$KEYCUTWIN/new"
 else
@@ -16,6 +17,7 @@ else
         ONWSL=false
         KEYDIR="$KEYCUTUNI"
         SCRATCHDIR="$EDLUNISCRATCH"
+	ALTSCRATCHDIR="$EDLWINSCRATCH"
 	    HANDDIR="$HANDUNI"
             NEWDIR="$KEYCUTWIN/new"
 
@@ -35,6 +37,9 @@ OUTPUT_FILE="$OUTPUT_DIR/one_of_each.edl"
 OUTPUT_FILE1="$OUTPUT_DIR/one_of_each_1.edl"
 OUTPUT_FILE2="$OUTPUT_DIR/one_of_each_2.edl"
 OUTPUT_FILE3="$OUTPUT_DIR/one_of_each_3.edl"
+OUTPUT_FILE4="$ALTSCRATCHDIR/one_of_each_1.edl"
+OUTPUT_FILE5="$ALTSCRATCHDIR/one_of_each_2.edl"
+OUTPUT_FILE6="$ALTSCRATCHDIR/one_of_each_3.edl"
 
 echo "Input $INPUT_DIR output $OUTPUT_FILE"
 
@@ -60,6 +65,9 @@ echo "# mpv EDL v0" > $OUTPUT_FILE
 echo "# mpv EDL v0" > $OUTPUT_FILE1
 echo "# mpv EDL v0" > $OUTPUT_FILE2
 echo "# mpv EDL v0" > $OUTPUT_FILE3
+#echo "# mpv EDL v0" > $OUTPUT_FILE4
+#echo "# mpv EDL v0" > $OUTPUT_FILE5
+#echo "# mpv EDL v0" > $OUTPUT_FILE6
 
 
 for file in $INPUT_DIR/*.edl; do
@@ -88,5 +96,11 @@ echo $OUTPUT_FILE
 shuf -n $THIRDS $TMPFILE2 >> $OUTPUT_FILE1
 shuf -n $THIRDS $TMPFILE2 >> $OUTPUT_FILE2
 shuf -n $THIRDS $TMPFILE2 >> $OUTPUT_FILE3
+
+echo "Writing the linux files $OUTPUT_FILE4"
+
+$SRC/cnvwinu $OUTPUT_FILE1 > $OUTPUT_FILE4
+$SRC/cnvwinu $OUTPUT_FILE2 > $OUTPUT_FILE5
+$SRC/cnvwinu $OUTPUT_FILE3 > $OUTPUT_FILE6
 
 echo "$THIRDS length written for 3 output files"
