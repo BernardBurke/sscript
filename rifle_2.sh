@@ -1,14 +1,17 @@
 # /bin/bash
+# take (initially) 2 input files, read one record at a time from each, make an output containing alternetive records from both
+# inspired by Natasha Kinski and Zoe Bloom
 source $SRC/common_inc.sh
 
 if [[ "$1" = "" ]]; then
-    INPUT_DIR=$KEYDIR
-    OUTPUT_DIR=$SCRATCHDIR
+    OUTPUT_FILE="$SCRATCHDIR\rifle_$$.edl
 else
-    INPUT_DIR=$1
-    OUTPUT_DIR=$SCRATCHDIR
-
+    OUTPUT_FILE="$1"
 fi
+
+echo "${@: $#-1}"
+
+exit
 
 
 if [[ "$2" = "" ]]; then
