@@ -47,21 +47,28 @@ SCREEN_HEIGHT=$(( SCREEN_HEIGHT / 2))
 
 case "$4" in
 
-1) GEOSTRING="50%+0+0"
+1) GEOSTRING="50%%x50%%+0+0"
 	;;
-2) GEOSTRING="50%+$SCREEN_WIDTH+0"
+2) GEOSTRING="50%%x50%%+$SCREEN_WIDTH+0"
 	;;
-3) GEOSTRING="50%+0+$SCREEN_HEIGHT"
+3) GEOSTRING="50%%x50%%+0+$SCREEN_HEIGHT"
 	;;
-4) GEOSTRING="50%+$SCREEN_WIDTH+$SCREEN_HEIGHT"
+4) GEOSTRING="50%%x50%%+$SCREEN_WIDTH+$SCREEN_HEIGHT"
 	;;
 *) echo "invalid quadrant $4 "
 	exit 1
 	;;
 esac
 
-echo "geometry $GEOSTRING screen $SCREEN filename $FILENAME volume $VOLUME"
+#echo "geometry $GEOSTRING screen $SCREEN filename $FILENAME volume $VOLUME"
 
 #exit 1
 
-mpv --volume="$VOLUME" --geometry="$GEOSTRING" --no-border --shuffle --screen="$SCREEN"  "$FILENAME" 
+#mpv --volume="$VOLUME" --geometry="$GEOSTRING" --no-border --shuffle --screen="$SCREEN"  "$FILENAME" 
+the_cmd="start mpv  --volume=10 --geometry="$GEOSTRING" --no-border --screen=0 --fs-screen=0  $(wslpath -w $FILENAME)"
+
+echo $the_cmd
+
+exit
+
+cmd.exe /c  mpv  --volume=10 --geometry="$GEOSTRING" --no-border --screen=0 --fs-screen=0 --fullscreen $(wslpath -w $FILENAME)
