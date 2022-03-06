@@ -19,10 +19,15 @@ if [[ ! -f "$1" ]]; then
         exit 1 
 fi
 
-if [[ $2 == "" ]] ; then
-        SIZE_LIMIT=20
+if [[ ! -d "$2" ]]; then 
+        echo "Directory $2 does not exist"
+        exit 1 
+fi
+
+if [[ $3 == "" ]] ; then
+        SIZEL=20
 else 
-        SIZE_LIMIT=$2 
+        SIZEL=$3
 fi
 
 ANY_FNF=false
@@ -31,7 +36,7 @@ i=1
 
 echo "# Long duration files" > $TMPFILE2
 
-while IFS=, read -r name start length ; do
+while IFS=, read -r name start lengy ; do
         if [[ "$name" == "d"* ]] || [[ "$name" == "D"* ]]; then
                 ((i++))
                 uname="$(wslpath -a "$name")"
@@ -39,10 +44,11 @@ while IFS=, read -r name start length ; do
                         echo "# $name file not found, record $i" >> $TMPFILE4
                         ANY_FNF=true
                 else
-                        if [[ "$length" -gt $SIZE_LIMIT ]]; then
-                                echo "$uname,$start,$length" >> $TMPFILE2
+                        if   (( $lengy >= $SIZEL )) ; then
+                                echo "$uname,$start,$lengy" >> $TMPFILE2
+                                echo "I decided that $lengy is greater than $SIZEL"
                         else
-                                echo "$uname,$start,$length" >> $TMPFILE1
+                                echo "$uname,$start,$lengy" >> $TMPFILE1
                         fi 
                 fi
 
@@ -51,12 +57,15 @@ while IFS=, read -r name start length ; do
         fi
 done < "$1"
 
-echo "# mpv EDL v0" 
+echo "# mpv EDL v0" > $TMPFILE5
 
 cat $TMPFILE1 | sort -Ru >> $TMPFILE5
 cat $TMPFILE2 | sort -Ru >> $TMPFILE5
 cat $TMPFILE3 | sort -Ru >> $TMPFILE5
 cat $TMPFILE4 | sort -Ru >> $TMPFILE5
+
+outspec=$2/$(basename -- "$1")
+cat $TMPFILE5 > "$outspec"
 
 if ($ANY_FNF) ; then
         exit 1
