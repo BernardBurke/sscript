@@ -1,5 +1,5 @@
 #!/bin/bash
-# a more serious version of this converter - written initially to check a windows edl
+# adapting the new cnvwinu.sh to check windows edls with broken links
 source $SRC/common_inc.sh
 # need 5 this time
 TMPFILE4=$(mktemp)
@@ -9,7 +9,7 @@ TMPFILE5=$(mktemp)
 
 
 if !($ONWSL); then
-        echo "This scrip is meant for WSL"
+        echo "This script is meant for WSL"
         exit 0
 fi
 
@@ -41,14 +41,14 @@ while IFS=, read -r name start lengy ; do
                 ((i++))
                 uname="$(wslpath -a "$name")"
                 if [[ ! -f "$uname" ]]; then
-                        echo "# $name file not found, record $i" >> $TMPFILE4
+                        echo "# $uname file not found, record $i" >> $TMPFILE4
                         ANY_FNF=true
                 else
                         if   (( $lengy >= $SIZEL )) ; then
-                                echo "$uname,$start,$lengy" >> $TMPFILE2
-                                echo "I decided that $lengy is greater than $SIZEL"
+                                echo "$name,$start,$lengy" >> $TMPFILE2
+                                #echo "I decided that $lengy is greater than $SIZEL"
                         else
-                                echo "$uname,$start,$lengy" >> $TMPFILE1
+                                echo "$name,$start,$lengy" >> $TMPFILE1
                         fi 
                 fi
 
