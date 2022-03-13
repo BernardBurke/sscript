@@ -48,7 +48,7 @@ strFileType = strFileType & " File"
 
 if wscript.arguments.count = 3 then
 
-    strCommand = wscript.arguments(2)
+    strCommand =  wscript.arguments(2)
 
 end if
 
@@ -61,7 +61,7 @@ for each objFile in cFiles
     'wscript.echo objFile.type & " comparing to " & strFileType
     if strFileType = objFile.type then
         
-        wscript.echo strCommand & ""  & objFile.path
+        wscript.echo strCommand & """"  & objFile.path & """"
         wscript.echo "echo %errorlevel%"
         'wscript.echo "pause"
         
