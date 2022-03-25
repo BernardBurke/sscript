@@ -19,7 +19,7 @@ fi
 
 OUTFILE=$SCRATCHDIR/shuffle_$$.edl
 
-find $KEYCUTWIN -type f -iname '*.edl'| sort -Ru | shuf -n $SHUF_COUNT | while read file; do
+find $INPUT_DIR -type f -iname '*.edl'| sort -Ru | shuf -n $SHUF_COUNT | while read file; do
 	cat "$file" >> $OUTFILE
     # Something involving $file, or you can leave
     # off the while to just get the filenames
