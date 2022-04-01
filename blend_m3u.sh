@@ -42,7 +42,10 @@ echo "Processing $INPUT_FILE"
 
 OLDIFS=$IFS
 
-dos2unix -n $INPUT_FILE $TMPFILE2
+# ran into a little issue with unicode files
+#dos2unix -n $INPUT_FILE $TMPFILE2
+
+cat $INPUT_FILE > $TMPFILE2
 
 while IFS= read -r line;
     do

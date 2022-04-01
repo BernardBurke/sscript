@@ -7,11 +7,15 @@ if [[ ! -f $1 ]]; then
     exit
 fi
 
+if [[ $SHAKE_DEFAULT == "" ]]; then
+	SHAKE_DEFAULT=200
+fi
+
 cp -v "$1" /tmp
 
 echo "# mpv EDL v0" > $TMPFILE1
 
-cat "$1" | grep -v "#" |  sort -Ru | shuf -n 400 >> $TMPFILE1
+cat "$1" | grep -v "#" |  sort -Ru | shuf -n $SHAKE_DEFAULT >> $TMPFILE1
 
 cat "$TMPFILE1"
 
