@@ -42,15 +42,10 @@ else
         TAG2="$4"
 fi
 
-echo $TAG1
-echo $TAG2
 
 OUT_FILENAME="$TAG1-$TAG2-$$.edl"
 
 
-echo $OUT_FILENAME
-
-read -p "tags"
 
 CORRECT_ORDER="$(( FILE2_COUNT > FILE1_COUNT ))"
 
@@ -74,7 +69,6 @@ done < "$FILE1"
 
 cat $TMPFILE1
 
-read -p "That was tmpfile1"
 
 echo "# mpv EDL v0" > $TMPFILE2
 
