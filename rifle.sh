@@ -74,7 +74,7 @@ echo "File 2 is $FILE2"
 
 while read -r f1line
 do 
-    echo $f1line >> $TMPFILE1
+    echo "$f1line" >> $TMPFILE1
     shuf -n 1 "$TMPFILE4" >> $TMPFILE1
 done < "$TMPFILE3"
 
