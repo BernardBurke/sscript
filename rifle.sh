@@ -3,6 +3,8 @@
 # inspired by Dominique and Uma
 source $SRC/common_inc.sh
 
+TMPFILE4=$(mktemp)
+
 if [[ "$1" = "" ]]; then
     	echo "Provide file 1"
 	exit
@@ -52,19 +54,29 @@ CORRECT_ORDER="$(( FILE2_COUNT > FILE1_COUNT ))"
 
 DOUBLE_FILE2_COUNT="$(( FILE2_COUNT * 2 ))"
 
+echo "File 2 is $FILE2"
+
 if (( CORRECT_ORDER )); then
 	echo "$FILE2 has $FILE2_COUNT records and $FILE1 has $FILE1_COUNT records"
-	echo "Please provide more records in Parameter 1"
-	exit
+	echo "Swapping"
+	TMP="$FILE2"
+	FILE2="$FILE1"
+	FILE1="$TMP"
 fi
 
+cat "$FILE1" > $TMPFILE3
+sed  -i 's/\//\\/g' "$TMPFILE3"
+cat "$FILE2" > $TMPFILE4
+sed  -i 's/\//\\/g' "$TMPFILE4"
+
+echo "File 2 is $FILE2"
 
 
 while read -r f1line
 do 
     echo $f1line >> $TMPFILE1
-    shuf -n 1 "$FILE2" >> $TMPFILE1
-done < "$FILE1"
+    shuf -n 1 "$TMPFILE4" >> $TMPFILE1
+done < "$TMPFILE3"
 
 
 cat $TMPFILE1
@@ -74,7 +86,7 @@ echo "# mpv EDL v0" > $TMPFILE2
 
 #cat "$TMPFILE1" | grep -v "#" |  sort -Ru | shuf -n $DOUBLE_FILE2_COUNT >> $TMPFILE2
 
-cat $TMPFILE1 >> $TMPFILE2
+grep -v "#" $TMPFILE1 >> $TMPFILE2
 
 cat $TMPFILE2
 
@@ -86,4 +98,4 @@ else
 	cat $TMPFILE2 > $RIFU/$OUT_FILENAME
 fi
 
-
+echo "Writting to $RIFW/$OUT_FILENAME"
