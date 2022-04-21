@@ -1,6 +1,6 @@
 # loop through all the edls specified in $1
 # generate 3 randomised EDL sets in a tmp dir
-#
+# This guys is on the way out.
 # Todo - generate these output as playlists
 if ( command -v wslpath &> /dev/null ); then
         #echo "Running on WSL"
