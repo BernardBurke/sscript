@@ -2,6 +2,8 @@
 # read in a huge edl and create playlist files
 source $SRC/common_inc.sh
 
+UNIQUE=$(rand)
+
 if [[ "$1" = "" ]]; then
     	echo "Provide file 1"
 	exit
@@ -28,15 +30,17 @@ fi
 
 for ((i=1;i < $NO_OF_PLAYLISTS; i++))
 do
-    echo "# mpv EDL v0" > $WSCR/chunk_$i.edl
-    shuf -n $NO_OF_RECORDS "$FILE1" >> $WSCR/chunk_$i.edl
-    echo $(wslpath -m $WSCR/chunk_$i.edl) >> $TMPFILE1
+    echo "# mpv EDL v0" > "$WSCR/chunk-$UNIQUE-$i.edl"
+    shuf -n $NO_OF_RECORDS "$FILE1" >> "$WSCR/chunk-$UNIQUE-$i.edl"
+    echo $(wslpath -m "$WSCR/chunk-$UNIQUE-$i.edl") >> $TMPFILE1
 
 done
 
-cat $TMPFILE1 > $WSCR/chunks.m3u
+PLAYLIST="$WSCR/chunks_$UNIQUE.m3u"
 
-cat "$WSCR/chunks.m3u"
-echo "$WSCR/chunks.m3u"
+cat $TMPFILE1 > $PLAYLIST
+
+cat "$PLAYLIST"
+echo "$PLAYLIST"
 
 
