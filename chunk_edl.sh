@@ -40,6 +40,8 @@ PLAYLIST="$WSCR/chunks_$UNIQUE.m3u"
 
 cat $TMPFILE1 > $PLAYLIST
 
+cat $TMPFILE1 > "$WSCR/chunks.m3u"
+
 cat "$PLAYLIST"
 echo "$PLAYLIST"
 

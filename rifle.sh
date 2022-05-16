@@ -46,6 +46,7 @@ fi
 
 
 OUT_FILENAME="$TAG1-$TAG2-$$.edl"
+OUT_FILE_STD="$TAG1-$TAG2.m3u"
 
 
 
@@ -94,8 +95,10 @@ read -p "Press return to write"
 
 if ( $ONWSL ) ; then 
 	cat $TMPFILE2 > $RIFW/$OUT_FILENAME
+	cat $TMPFILE2 | grep -v "#" > $RIFW/$OUT_FILE_STD
 else
 	cat $TMPFILE2 > $RIFU/$OUT_FILENAME
 fi
 
-echo "Writting to $RIFW/$OUT_FILENAME"
+echo "Writting to $RIFW/$OUT_FILENAME and $RIFW/$OUT_FILE_STD"
+
