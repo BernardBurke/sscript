@@ -31,7 +31,7 @@ fi
 for ((i=1;i < $NO_OF_PLAYLISTS; i++))
 do
     echo "# mpv EDL v0" > "$WSCR/chunk-$UNIQUE-$i.edl"
-    shuf -n $NO_OF_RECORDS "$FILE1" >> "$WSCR/chunk-$UNIQUE-$i.edl"
+    shuf -n $NO_OF_RECORDS "$FILE1" | grep -vi 'audio' >> "$WSCR/chunk-$UNIQUE-$i.edl"
     echo $(wslpath -m "$WSCR/chunk-$UNIQUE-$i.edl") >> $TMPFILE1
 
 done
