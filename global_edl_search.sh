@@ -38,6 +38,7 @@ OUTPUT_FILE="$OUTPUT_FILE-$$.edl"
 grep -irh $SEARCH_TERM $KEYCUTWIN/*.edl > $TMPFILE1
 grep -irh $SEARCH_TERM $HANDWIN/*.edl >> $TMPFILE1
 grep -irh $SEARCH_TERM $WSCR/*.edl >> $TMPFILE1
+grep -irh $SEARCH_TERM $BCHW/*.edl >> $TMPFILE1
 grep -iv audio  $TMPFILE1 > $TMPFILE2
 grep -iv globeld  $TMPFILE2 > $TMPFILE3
 

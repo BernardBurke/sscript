@@ -2,3 +2,4 @@
 ./winkeycut2uni.sh  
 ./winscratch2uni.sh
 ./winrif2uni.sh
+./winbch2uni.sh
