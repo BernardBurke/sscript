@@ -17,6 +17,7 @@ else
 fi
 
 OUTPUT_FILE="$HANDWIN/subtitles-$(basename $1).m3u"
+OUTPUT_UNIX_FILE="$HANDUNI/subtitles-$(basename $1).m3u"
 OUTPUT_CMD="$HANDWIN/subtitles-$(basename $1).cmd"
 
 touch $OUTPUT_FILE
@@ -29,11 +30,12 @@ for f in $DIR/*.vtt;
         do
 	        this_file=$(basename  "$f" ".vtt")
                 this_file="$DIR/$this_file.mp4"
+                echo $this_file >> $OUTPUT_UNIX_FILE
                 echo $(wslpath -w $this_file) >> $OUTPUT_FILE
 done
 
         cat "$OUTPUT_FILE"
-        echo "wrote $OUTPUT_FILE"
+        echo "wrote $OUTPUT_FILE and $OUTPUT_UNIX_FILE"
         echo "start /min plylist 10 1 %HANDWIN%\subtitles-pure.m3u" > $OUTPUT_CMD
         echo "start /min plylist 10 2 %HANDWIN%\subtitles-pure.m3u" >> $OUTPUT_CMD
         echo "start /min plylist 10 0 %HANDWIN%\subtitles-pure.m3u" >> $OUTPUT_CMD
