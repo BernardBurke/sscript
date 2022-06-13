@@ -16,4 +16,7 @@ do
 	echo $(wslpath -w "$f") >> $TMPFILE2
 done < "$TMPFILE3"
 
-cmd.exe /c mpv  --no-config --script="c:\users\ben\mpv-ditch-or-bitch.lua" --fullscreen --playlist=$(wslpath -w $TMPFILE2)
+# cmd.exe /c mpv  --no-config --script="c:\users\ben\mpv-ditch-or-bitch.lua" --fullscreen --playlist=$(wslpath -w $TMPFILE2)
+#cmd.exe /c mpv  --playlist=$(wslpath -w $TMPFILE2)
+echo "mpv --playlist=$(wslpath -w $TMPFILE2)"
+
