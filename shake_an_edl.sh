@@ -8,7 +8,7 @@ if [[ ! -f $1 ]]; then
 fi
 
 if [[ $SHAKE_DEFAULT == "" ]]; then
-	SHAKE_DEFAULT=200
+	SHAKE_DEFAULT=400
 fi
 
 cp -v "$1" /tmp
