@@ -27,9 +27,11 @@ k=0
 
 echo "# mpv EDL v0" > $TMPFILE1
 
+sed -i 's/\r$//' "$1" # get rid of those pesky carriage returns
+
 while IFS= read -r fname; do
-    nixname=$(wslpath -u "$fname" | tr -d '\r' )
-#    nixname=$(wslpath -u "$fname")
+    #nixname=$(wslpath -u "$fname" | tr -d '\r' )
+    nixname=$(wslpath -u "$fname")
     #echo $nixname
     j=0
     leng=$(ffprobe -v quiet  -of csv=p=0 -show_entries format=duration "$nixname")
@@ -41,10 +43,11 @@ while IFS= read -r fname; do
                     period=$(shuf -i $LOWER-$UPPER -n 1 )
                     strt=$(rand -M $length -s $period )
                     runtime=$(( $strt + $period ))
-                    #echo "Length $length Start $strt Period $period Runtime $runtime"
+                    #echo "Length $length Start $strt Period $period Runtime $runtime fname $fname"
                     #echo "Runtime $runtime"
                     if [ "$length" -gt "$runtime" ]; then
                             #period=$[ "$period" - "1" ]
+                            #echo "$fname,$strt,$period" 
                             echo "$fname,$strt,$period" >> $TMPFILE2
                             ((k++))
                     else
