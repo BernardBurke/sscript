@@ -20,7 +20,8 @@ else
     fi
 fi
 
-SRT_FILENAME=$OUTPUT_DIR/$(basename "$1" .mp4).srt
+# needs a case statement (mp4 m4a mp3 mkv)
+SRT_FILENAME=$OUTPUT_DIR/$(basename "$1" .mp3).srt
 
 echo $SRT_FILENAME
 
