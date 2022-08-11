@@ -20,8 +20,11 @@ else
     fi
 fi
 
+FILE_EXTENSION="${1##*.}"
+echo $FILE_EXTENSION
+
 # needs a case statement (mp4 m4a mp3 mkv)
-SRT_FILENAME=$OUTPUT_DIR/$(basename "$1" .mp3).srt
+SRT_FILENAME=$OUTPUT_DIR/$(basename "$1" $FILE_EXTENSION)srt
 
 echo $SRT_FILENAME
 
@@ -31,6 +34,8 @@ if [[ "$3" = "" ]]; then
             exit 1
         fi
 fi
+
+
 
 vosk-transcriber -i "$1" \
         -t srt \
