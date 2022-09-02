@@ -29,7 +29,7 @@ sed -i 's/\r$//' "$1" # get rid of those pesky carriage returns
 while IFS= read -r fname; do
     #nixname=$(wslpath -u "$fname" | tr -d '\r' )
     nixname=$(wslpath -u "$fname")
-    #echo $nixname
+    echo $nixname
     j=0
     leng=$(ffprobe -v quiet  -of csv=p=0 -show_entries format=duration "$nixname")
 #    echo $leng
@@ -48,3 +48,4 @@ OUTPUT_FILE=$WSCR/final_$SLICE_$$.edl
 echo "# mpv EDL v0" > $OUTPUT_FILE
 cat $TMPFILE2 | shuf -n 300 >> $OUTPUT_FILE
 echo $OUTPUT_FILE
+echo "ply 10 1 $(wslpath -w $OUTPUT_FILE)"
