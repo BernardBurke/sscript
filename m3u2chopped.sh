@@ -6,7 +6,7 @@ if [[ ! -f "$1" ]]; then
     echo "Please provice an M3U file that exists"
     exit 1
 else
-    EDLOUT=$(basename -- "$1" .m3u)_chopped$$.edl
+    EDLOUT=$(basename -- "$1" .m3u)_chopped_$$.edl
     EDLOUT="$(dirname "$1")/$EDLOUT"
 fi
 
@@ -84,7 +84,10 @@ echo "# mpv EDL v0" > $WSCR/m3u_chopped2.edl
 cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped2.edl
 echo "# mpv EDL v0" > $WSCR/m3u_chopped3.edl
 cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped3.edl
+
+echo "# mpv EDL v0" > $EDLOUT
 cat $TMPFILE1 | shuf -n $k >> "$EDLOUT"
+
 ls $WSCR/m3u_chopped?.edl -al
 
 
