@@ -85,6 +85,14 @@ cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped2.edl
 echo "# mpv EDL v0" > $WSCR/m3u_chopped3.edl
 cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped3.edl
 
+cat $TMPFILE2 | shuf -n $k  >> $TMPFILE1
+echo "# mpv EDL v0" > $WSCR/m3u_chopped4.edl
+cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped4.edl
+echo "# mpv EDL v0" > $WSCR/m3u_chopped5.edl
+cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped5.edl
+echo "# mpv EDL v0" > $WSCR/m3u_chopped6.edl
+cat $TMPFILE1 | shuf -n $k >> $WSCR/m3u_chopped6.edl
+
 echo "# mpv EDL v0" > $EDLOUT
 cat $TMPFILE1 | shuf -n $k >> "$EDLOUT"
 
