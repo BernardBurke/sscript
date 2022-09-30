@@ -98,6 +98,20 @@ cat $TMPFILE1 | shuf -n $k >> "$EDLOUT"
 
 ls $WSCR/m3u_chopped?.edl -al
 
+cp $WSCR/m3u_chopped1.edl $WSCR/m3u_chopped_shaken1.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken1.edl
+cp $WSCR/m3u_chopped2.edl $WSCR/m3u_chopped_shaken2.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken2.edl
+cp $WSCR/m3u_chopped3.edl $WSCR/m3u_chopped_shaken3.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken3.edl
+cp $WSCR/m3u_chopped4.edl $WSCR/m3u_chopped_shaken4.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken4.edl
+cp $WSCR/m3u_chopped5.edl $WSCR/m3u_chopped_shaken5.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken5.edl
+cp $WSCR/m3u_chopped6.edl $WSCR/m3u_chopped_shaken6.edl
+$SRC/shake_an_edl.sh $WSCR/m3u_chopped_shaken6.edl
+
+
 
 echo $(wslpath -w "$TMPFILE1")
 echo "edl produced at $EDLOUT"
