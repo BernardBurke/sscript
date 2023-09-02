@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 # a start at common includes
 # 
 TMPFILE1=$(mktemp) # for find results
